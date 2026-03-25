@@ -1,0 +1,76 @@
+baseURL: https://umair-as.github.io/blog/
+locale: en-us
+title: Umair's Embedded Blog
+theme: PaperMod
+
+paginate: 10
+
+params:
+  env: production
+  author: Umair Ahmed Shah
+  description: "Writing about embedded Linux, Yocto, Zephyr, and IoT — from the trenches."
+  defaultTheme: auto
+  ShowReadingTime: true
+  ShowShareButtons: true
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  ShowToc: true
+  TocOpen: false
+
+  homeInfoParams:
+    Title: "Hey there"
+    Content: >
+      I'm Umair — an embedded software engineer writing about Yocto, Zephyr,
+      Linux internals, and IoT from real project experience.
+      One article a week, straight from the build directory.
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/umair-as"
+    - name: linkedin
+      url: "https://de.linkedin.com/in/umairahmedshah"
+
+  assets:
+    favicon: "/favicon.ico"
+
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.4
+    minMatchCharLength: 0
+    keys: ["title", "permalink", "summary", "content"]
+
+menu:
+  main:
+    - identifier: archive
+      name: Archive
+      url: /archives/
+      weight: 5
+    - identifier: tags
+      name: Tags
+      url: /tags/
+      weight: 10
+    - identifier: search
+      name: Search
+      url: /search/
+      weight: 15
+    - identifier: about
+      name: About
+      url: /about/
+      weight: 20
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+markup:
+  highlight:
+    codeFences: true
+    guessSyntax: true
+    lineNos: false
+    style: dracula
