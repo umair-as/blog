@@ -1,6 +1,6 @@
 baseURL: https://umair-as.github.io/blog/
 locale: en-us
-title: Umair's Embedded Blog
+title: Umair Ahmed Shah
 theme: PaperMod
 
 paginate: 10
@@ -8,22 +8,23 @@ paginate: 10
 params:
   env: production
   author: Umair Ahmed Shah
-  description: "Writing about embedded Linux, Yocto, Zephyr, and IoT — from the trenches."
-  defaultTheme: auto
+  description: "Systems software engineer writing about real projects — embedded Linux, wireless protocols, infrastructure, and whatever else breaks at 2am."
+  defaultTheme: dark
   ShowReadingTime: true
-  ShowShareButtons: true
+  ShowShareButtons: false
   ShowPostNavLinks: true
   ShowBreadCrumbs: true
   ShowCodeCopyButtons: true
   ShowToc: true
   TocOpen: false
+  ShowWordCount: false
+  comments: false
 
   homeInfoParams:
-    Title: "Hey there"
+    Title: "Umair Ahmed Shah"
     Content: >
-      I'm Umair — an embedded software engineer writing about Yocto, Zephyr,
-      Linux internals, and IoT from real project experience.
-      One article a week, straight from the build directory.
+      Building IoT gateways, custom Linux distributions, and wireless firmware
+      — then writing about what actually happened.
 
   socialIcons:
     - name: github
@@ -73,4 +74,6 @@ markup:
     codeFences: true
     guessSyntax: true
     lineNos: false
-    style: dracula
+    lineNumbersInTable: false
+    style: nord
+    noClasses: true

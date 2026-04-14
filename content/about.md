@@ -1,16 +1,25 @@
 ---
 title: "About"
 url: "/about/"
-summary: "About me"
+summary: "About Umair Ahmed Shah"
 ---
 
 ### Hey, I'm Umair
 
-Embedded software engineer based in Germany, building things at the intersection of Linux, wireless protocols, and edge computing.
+Systems software engineer based in Cologne, Germany. I've spent the last decade
+working close to the metal — custom Linux distributions, embedded firmware,
+wireless protocols, edge infrastructure, and the tooling that holds all of it together.
 
-I write C and C++ for resource-constrained devices, build custom Linux distributions with Yocto, and work on firmware for Zephyr-based IoT devices. I've done this across smart grid, automotive, energy automation, retail IoT, and lighting.
+The domains shift depending on the project. I've worked across smart grid, automotive,
+energy automation, retail IoT, and industrial lighting. The common thread is usually
+some combination of a constrained device, a network it needs to talk over, and a
+software stack that has to be reliable without anyone around to babysit it.
 
-This blog is where I share what I learn — mostly about Yocto, Zephyr, embedded Linux, and OTA updates. Everything here comes from real projects and real hardware.
+I write here about things I've actually built or debugged — not tutorials derived
+from documentation, but the real sequence of events: what I tried, what broke,
+and what eventually worked. Occasionally that's a deep dive into Yocto or Zephyr.
+Sometimes it's a wireshark trace or a CI pipeline or a kernel config decision that
+took three days to understand.
 
 ### Get in touch
 

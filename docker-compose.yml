@@ -1,0 +1,29 @@
+services:
+
+  # Local dev server — live reload, drafts visible
+  serve:
+    build: .
+    volumes:
+      - .:/site
+      - hugo_cache:/root/.cache/hugo_cache
+    ports:
+      - "1313:1313"
+    # --navigateToChanged jumps browser to the file you just saved
+    command: >
+      hugo server
+        --buildDrafts
+        --bind 0.0.0.0
+        --baseURL http://localhost:1313/blog/
+        --navigateToChanged
+        --disableFastRender
+
+  # Production build — writes to ./public/
+  build:
+    build: .
+    volumes:
+      - .:/site
+      - hugo_cache:/root/.cache/hugo_cache
+    command: hugo --minify --cleanDestinationDir
+
+volumes:
+  hugo_cache:

@@ -1,0 +1,851 @@
+/* ============================================================
+   Phosphor Notebook — custom theme override for PaperMod
+   Fonts: JetBrains Mono (chrome/headings) + Lora (prose)
+   Accent: amber #f0a030 — warm phosphor glow
+   ============================================================ */
+
+/* ── 1. FONT VARS ─────────────────────────────────────────── */
+:root {
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --font-prose: 'DM Sans', system-ui, sans-serif;
+
+  /* Accent */
+  --amber: #f0a030;
+  --amber-dim: rgba(240, 160, 48, 0.10);
+  --amber-border: rgba(240, 160, 48, 0.28);
+  --amber-dark: #c07018;
+  /* --amber-text: readable amber for light mode text (contrast-safe on #f5f2ec) */
+  --amber-text: #6b3000;
+
+  /* Light mode surface palette */
+  --theme: #f5f2ec;
+  --entry: #ffffff;
+  --primary: #1a1612;
+  --secondary: #6b6257;
+  --tertiary: #ddd8ce;
+  --content: #2c2520;
+  --code-block-bg: #1e1a14;
+  --code-bg: #eeeae2;
+  --border: #e0dace;
+  --radius: 6px;
+  --main-width: 740px;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --amber-text: #f0a030;
+  --theme: #080c12;
+  --entry: #0f1420;
+  --primary: #dde3f0;
+  --secondary: #7c8aa0;
+  --tertiary: #1c2436;
+  --content: #c8d0e0;
+  --code-block-bg: #060911;
+  --code-bg: #111826;
+  --border: #1a2236;
+  color-scheme: dark;
+}
+
+/* ── 2. BASE TYPOGRAPHY ───────────────────────────────────── */
+body {
+  font-family: var(--font-prose);
+  font-size: 17px;
+  line-height: 1.75;
+  letter-spacing: 0.005em;
+}
+
+/* All UI chrome and headings in JetBrains Mono */
+h1, h2, h3, h4, h5, h6,
+.nav, .logo a,
+#menu a,
+.post-meta,
+.breadcrumbs,
+.entry-footer,
+.post-tags a,
+.toc,
+.paginav .title,
+button#theme-toggle,
+.archive-entry .entry-hint-parent,
+.terms-tags a {
+  font-family: var(--font-mono);
+}
+
+/* Prose body stays in Lora */
+.post-content,
+.home-info .entry-content,
+.entry-content {
+  font-family: var(--font-prose);
+}
+
+/* ── 3. HEADER & NAV ──────────────────────────────────────── */
+header#site-header {
+  background: var(--theme);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+[data-theme="dark"] header#site-header {
+  background: rgba(8, 12, 18, 0.92);
+  border-bottom: 1px solid rgba(26, 34, 54, 0.8);
+}
+
+.logo a {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--primary);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Amber cursor blink after site title */
+.logo a::after {
+  content: '_';
+  color: var(--amber-text);
+  animation: blink 1.2s step-end infinite;
+  font-weight: 400;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+#menu a {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  transition: color 0.15s ease;
+}
+
+#menu a:hover,
+#menu .active {
+  color: var(--amber-text);
+  border-bottom: none !important;
+}
+
+#menu .active {
+  color: var(--amber-text);
+  border-bottom: 2px solid var(--amber) !important;
+}
+
+/* ── 4. PAGE BODY ─────────────────────────────────────────── */
+.main {
+  padding-top: var(--gap);
+}
+
+/* Warm tinted list page background */
+.list {
+  background: var(--theme) !important;
+}
+
+[data-theme="dark"] .list {
+  background: var(--theme) !important;
+}
+
+/* ── 5. HOMEPAGE HERO ─────────────────────────────────────── */
+.home-info {
+  min-height: auto !important;
+  margin: calc(var(--gap) * 2) 0 calc(var(--gap) * 3) !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+.home-hero {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.home-hero__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--amber-text);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.home-hero__eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 28px;
+  height: 1px;
+  background: var(--amber);
+  flex-shrink: 0;
+}
+
+.home-hero__name {
+  font-family: var(--font-mono) !important;
+  font-size: clamp(32px, 5vw, 52px) !important;
+  font-weight: 700 !important;
+  line-height: 1.08 !important;
+  letter-spacing: -0.02em !important;
+  color: var(--primary) !important;
+  margin: 0 0 24px !important;
+  overflow: visible !important;
+  -webkit-line-clamp: unset !important;
+}
+
+.home-hero__name em {
+  font-style: normal;
+  color: var(--amber-text);
+}
+
+.home-hero__bio {
+  font-family: var(--font-prose) !important;
+  font-size: 18px !important;
+  line-height: 1.7 !important;
+  color: var(--content) !important;
+  max-width: 540px !important;
+  margin: 0 0 28px !important;
+  -webkit-line-clamp: unset !important;
+}
+
+.home-hero__stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 32px;
+}
+
+.home-hero__stack span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  border: 1px solid var(--border);
+  padding: 4px 10px;
+  border-radius: 3px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+[data-theme="dark"] .home-hero__stack span:hover {
+  border-color: var(--amber-border);
+  color: var(--amber-text);
+}
+
+.home-hero__footer {
+  font-size: 14px !important;
+}
+
+/* Social icons in hero */
+.home-hero__footer .social-icons a {
+  margin-right: 4px;
+}
+
+/* ── 6. POST ENTRY CARDS ──────────────────────────────────── */
+.post-entry {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 22px 26px;
+  margin-bottom: 12px;
+  position: relative;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  overflow: hidden;
+}
+
+/* Amber left-edge reveal on hover */
+.post-entry::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--amber);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.2s ease;
+  border-radius: 3px 0 0 3px;
+}
+
+.post-entry:hover::before {
+  transform: scaleY(1);
+}
+
+.post-entry:hover {
+  border-color: var(--amber-border);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+[data-theme="dark"] .post-entry:hover {
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.4);
+}
+
+.post-entry:active {
+  transform: scale(0.99) !important;
+}
+
+.entry-header h2 {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  transition: color 0.15s;
+}
+
+.post-entry:hover .entry-header h2 {
+  color: var(--amber-text);
+}
+
+.entry-content {
+  font-family: var(--font-prose);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--secondary);
+  margin: 8px 0 10px;
+}
+
+.entry-footer {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  color: var(--secondary);
+  opacity: 0.75;
+}
+
+/* ── 7. POST SINGLE — READING EXPERIENCE ─────────────────── */
+.post-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-title {
+  font-family: var(--font-mono);
+  font-size: clamp(24px, 4vw, 36px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+}
+
+.post-description {
+  font-family: var(--font-prose);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--secondary);
+  line-height: 1.6;
+}
+
+.post-meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--secondary);
+  margin-top: 16px;
+}
+
+/* Post content prose */
+.post-content {
+  font-family: var(--font-prose);
+  font-size: 17px;
+  line-height: 1.78;
+  color: var(--content);
+  font-weight: 300;
+}
+
+.post-content h1,
+.post-content h2,
+.post-content h3,
+.post-content h4,
+.post-content h5,
+.post-content h6 {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--primary);
+}
+
+.post-content h2 {
+  font-size: 22px;
+  margin-top: 48px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+.post-content h3 {
+  font-size: 18px;
+  margin-top: 36px;
+  margin-bottom: 14px;
+}
+
+/* Heading anchor */
+.post-content h1:hover .anchor,
+.post-content h2:hover .anchor,
+.post-content h3:hover .anchor {
+  color: var(--amber-text);
+}
+
+/* Inline code */
+.post-content code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: var(--code-bg);
+  color: var(--amber-text);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 2px 6px;
+  margin: 0 2px;
+}
+
+[data-theme="dark"] .post-content code {
+  color: #e8c87a;
+}
+
+/* Code blocks */
+.post-content .highlight,
+.post-content pre {
+  position: relative;
+  border-radius: var(--radius);
+  margin: 24px 0;
+}
+
+.post-content .highlight {
+  border: 1px solid var(--border);
+}
+
+[data-theme="dark"] .post-content .highlight {
+  border-color: #141e30;
+}
+
+.post-content pre code {
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.65;
+  padding: 20px 20px !important;
+  color: #c9d5e8 !important;
+  background: var(--code-block-bg) !important;
+  border-radius: calc(var(--radius) - 1px);
+  border: none;
+  margin: 0;
+}
+
+[data-theme="dark"] .post-content pre code {
+  color: #c8d8f0 !important;
+}
+
+/* Copy button */
+.copy-code {
+  font-family: var(--font-mono) !important;
+  font-size: 10px !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.4;
+  transition: opacity 0.15s;
+}
+
+.copy-code:hover {
+  opacity: 0.9;
+  color: var(--amber-text) !important;
+}
+
+/* Blockquotes */
+.post-content blockquote {
+  border-inline-start: 3px solid var(--amber);
+  background: var(--amber-dim);
+  padding: 14px 20px;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 24px 0;
+  font-style: italic;
+  color: var(--secondary);
+}
+
+.post-content blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tables */
+.post-content table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 24px 0;
+}
+
+.post-content table th {
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 11px;
+  background: var(--code-bg);
+  padding: 10px 14px;
+  border-bottom: 2px solid var(--border);
+  color: var(--secondary);
+}
+
+.post-content table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--content);
+}
+
+.post-content table tr:last-child td {
+  border-bottom: none;
+}
+
+[data-theme="dark"] .post-content table th {
+  background: #0b0f18;
+}
+
+[data-theme="dark"] .post-content table tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Links in post */
+.post-content a {
+  color: var(--amber-text);
+  box-shadow: 0 1px 0 var(--amber-border) !important;
+  text-decoration: none;
+  transition: color 0.15s, box-shadow 0.15s;
+}
+
+.post-content a:hover {
+  color: var(--amber-text);
+  box-shadow: 0 1px 0 var(--amber) !important;
+}
+
+[data-theme="dark"] .post-content a {
+  /* --amber-text = #f0a030 in dark mode via :root[data-theme="dark"] override */
+  box-shadow: 0 1px 0 rgba(240, 160, 48, 0.35) !important;
+}
+
+/* HR */
+.post-content hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 40px 0;
+  position: relative;
+}
+
+.post-content hr::after {
+  content: '◆';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--theme);
+  padding: 0 12px;
+  color: var(--tertiary);
+  font-size: 10px;
+}
+
+/* ── 8. TABLE OF CONTENTS ─────────────────────────────────── */
+.toc {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  background: var(--code-bg) !important;
+  border: 1px solid var(--border) !important;
+  border-left: 3px solid var(--amber) !important;
+  border-radius: var(--radius) !important;
+  padding: 14px 16px !important;
+  margin: 0 0 32px !important;
+}
+
+[data-theme="dark"] .toc {
+  background: var(--entry) !important;
+}
+
+.toc .details {
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--amber-text);
+}
+
+.toc .inner {
+  margin: 10px 0 0 0;
+  padding: 0;
+  line-height: 1.9;
+}
+
+.toc a {
+  color: var(--secondary);
+  text-decoration: none;
+  transition: color 0.12s;
+}
+
+.toc a:hover {
+  color: var(--amber-text);
+}
+
+/* ── 9. POST TAGS ─────────────────────────────────────────── */
+.post-tags a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--secondary);
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0 12px;
+  line-height: 30px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.post-tags a:hover {
+  color: var(--amber-text);
+  border-color: var(--amber-border);
+  background: var(--amber-dim);
+}
+
+/* Tags in list/terms view */
+.terms-tags a {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* ── 10. PAGINATION ───────────────────────────────────────── */
+.paginav {
+  font-family: var(--font-mono);
+  border: 1px solid var(--border);
+  background: var(--entry);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.paginav .title {
+  font-size: 10px;
+  letter-spacing: 0.10em;
+  color: var(--amber-text);
+}
+
+.paginav a:hover {
+  background: var(--amber-dim);
+}
+
+.paginav span:hover:not(.title) {
+  box-shadow: none;
+  color: var(--amber-text);
+}
+
+/* ── 11. ARCHIVE & BREADCRUMBS ────────────────────────────── */
+.archive-entry {
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+.archive-year {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--amber-text);
+  text-transform: uppercase;
+}
+
+.archive-month {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--secondary);
+  text-transform: uppercase;
+}
+
+.breadcrumbs {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--secondary);
+}
+
+.breadcrumbs a {
+  font-size: 12px;
+  color: var(--secondary);
+  text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+  color: var(--amber-text);
+}
+
+/* ── 12. FOOTER ───────────────────────────────────────────── */
+footer#footer {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.03em;
+  border-top: 1px solid var(--border);
+  color: var(--secondary);
+  padding: 24px 0;
+}
+
+footer#footer a {
+  color: var(--secondary);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+footer#footer a:hover {
+  color: var(--amber-text);
+}
+
+/* ── 13. SCROLLBAR ────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--tertiary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* Horizontal scroll on code blocks */
+.highlight ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* ── 14. THEME TOGGLE BUTTON ──────────────────────────────── */
+button#theme-toggle {
+  color: var(--secondary);
+  transition: color 0.15s;
+  font-size: 22px !important;
+}
+
+button#theme-toggle:hover {
+  color: var(--amber-text);
+}
+
+/* ── 15. SEARCH ───────────────────────────────────────────── */
+#searchbox input {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--primary);
+  transition: border-color 0.15s;
+}
+
+#searchbox input:focus {
+  border-color: var(--amber-border);
+  outline: none;
+}
+
+#searchResults li {
+  font-family: var(--font-mono);
+  font-size: 14px;
+}
+
+/* ── 16. PAGE LOAD ANIMATION ──────────────────────────────── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.home-info {
+  animation: fadeUp 0.5s ease both;
+}
+
+.post-entry {
+  animation: fadeUp 0.4s ease both;
+}
+
+.post-entry:nth-child(2) { animation-delay: 0.04s; }
+.post-entry:nth-child(3) { animation-delay: 0.08s; }
+.post-entry:nth-child(4) { animation-delay: 0.12s; }
+.post-entry:nth-child(5) { animation-delay: 0.16s; }
+.post-entry:nth-child(6) { animation-delay: 0.20s; }
+
+.post-header {
+  animation: fadeUp 0.45s ease both;
+}
+
+.post-content {
+  animation: fadeUp 0.5s ease 0.05s both;
+}
+
+/* ── 17. MOBILE ───────────────────────────────────────────── */
+@media (max-width: 640px) {
+  body {
+    font-size: 16px;
+  }
+
+  .post-content {
+    font-size: 16px;
+  }
+
+  .post-title {
+    font-size: 24px;
+  }
+
+  .home-hero__name {
+    font-size: 32px !important;
+  }
+
+  .home-hero__bio {
+    font-size: 16px !important;
+  }
+
+  .post-entry {
+    padding: 18px 20px;
+  }
+
+  .post-content pre code {
+    font-size: 12.5px;
+  }
+}
+
+/* ── 18. LIGHT MODE REFINEMENTS ───────────────────────────── */
+[data-theme="light"] .post-entry:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .post-content code {
+  /* amber-text (#6b3000) is already applied via --amber-text; just fix the bg */
+  background: #f0ece2;
+  border-color: #e0d8c8;
+}
+
+[data-theme="light"] .post-content a {
+  box-shadow: 0 1px 0 rgba(107, 48, 0, 0.35) !important;
+}
+
+[data-theme="light"] .toc {
+  background: #f0ece4 !important;
+}
+
+[data-theme="light"] .home-hero__stack span:hover {
+  border-color: rgba(107, 48, 0, 0.4);
+}

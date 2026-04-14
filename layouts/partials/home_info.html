@@ -1,0 +1,37 @@
+{{- with site.Params.homeInfoParams -}}
+<article class="first-entry home-info">
+    <div class="home-hero">
+
+        <p class="home-hero__eyebrow">Systems Software Engineer · Cologne, Germany</p>
+
+        <header class="entry-header">
+            <h1 class="home-hero__name">
+                Umair<br><em>Ahmed Shah</em>
+            </h1>
+        </header>
+
+        <section class="entry-content home-hero__bio">
+            <p>
+                I build systems software — embedded Linux, wireless firmware, edge infrastructure,
+                OTA pipelines, and whatever else the project demands.
+                This is where I write about what actually happened.
+            </p>
+        </section>
+
+        <div class="home-hero__stack">
+            <span>Embedded Linux</span>
+            <span>Yocto</span>
+            <span>Zephyr</span>
+            <span>Rust</span>
+            <span>Go</span>
+            <span>IoT / Edge</span>
+            <span>CI/CD</span>
+        </div>
+
+        <footer class="entry-footer home-hero__footer">
+            {{- partial "social_icons.html" (dict "align" "left") }}
+        </footer>
+
+    </div>
+</article>
+{{- end -}}
