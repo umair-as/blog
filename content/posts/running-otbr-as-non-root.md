@@ -1,7 +1,7 @@
 ---
 title: "Running OTBR as Non-Root: Finding the Capability Floor"
 date: 2026-04-14
-draft: true
+draft: false
 tags: ["otbr", "openthread", "linux", "systemd", "security", "yocto"]
 slug: "running-otbr-as-non-root"
 series: ["Hardening OTBR"]
