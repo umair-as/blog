@@ -10,8 +10,7 @@ Systems software engineer based in Cologne, Germany. I've spent the last decade
 working close to the metal — custom Linux distributions, embedded firmware,
 wireless protocols, edge infrastructure, and the tooling that holds all of it together.
 
-The domains shift depending on the project. I've worked across smart grid, automotive,
-energy automation, retail IoT, and industrial lighting. The common thread is usually
+The domains shift depending on the project. The common thread is usually
 some combination of a constrained device, a network it needs to talk over, and a
 software stack that has to be reliable without anyone around to babysit it.
 

@@ -18,7 +18,11 @@ params:
   ShowToc: true
   TocOpen: false
   ShowWordCount: false
+  ShowRssButtonInSectionTermList: true
   comments: false
+
+  # Post series support — renders a series box at the top of each post
+  ShowSeriesNavigation: true
 
   homeInfoParams:
     Title: "Umair Ahmed Shah"
@@ -31,9 +35,15 @@ params:
       url: "https://github.com/umair-as"
     - name: linkedin
       url: "https://de.linkedin.com/in/umairahmedshah"
+    - name: rss
+      url: "/blog/index.xml"
 
   assets:
     favicon: "/favicon.ico"
+
+  # Schema.org structured data — helps search engines understand the site
+  schema:
+    publisherType: Person
 
   fuseOpts:
     isCaseSensitive: false
