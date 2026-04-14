@@ -2,6 +2,7 @@
 title: "About"
 url: "/about/"
 summary: "About Umair Ahmed Shah"
+ShowToc: false
 ---
 
 ### Hey, I'm Umair

@@ -330,4 +330,3 @@ Full source for the Yocto recipe, service files, and init script is in
 - [`ipset` man page](https://ipset.netfilter.org/ipset.man.html)
 - [EU Cyber Resilience Act — European Commission](https://digital-strategy.ec.europa.eu/en/policies/cyber-resilience-act)
 - [EU Cyber Resilience Act — community resource](https://www.european-cyber-resilience-act.com/)
-- [Part 2 — Hardening the OTBR Service File](/blog/posts/otbr-systemd-hardening/)
