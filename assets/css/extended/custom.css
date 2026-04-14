@@ -594,6 +594,20 @@ header#site-header {
   color: var(--amber-text);
 }
 
+/* Sticky left sidebar TOC on wide screens */
+@media (min-width: 1400px) {
+  .toc {
+    position: fixed;
+    left: 2rem;
+    top: 5rem;
+    width: 220px;
+    max-height: calc(100vh - 7rem);
+    overflow-y: auto;
+    margin: 0 !important;
+    z-index: 10;
+  }
+}
+
 /* ── 9. POST TAGS ─────────────────────────────────────────── */
 .post-tags a {
   font-family: var(--font-mono);
