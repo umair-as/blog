@@ -21,6 +21,7 @@ params:
   ShowWordCount: false
   ShowRssButtonInSectionTermList: true
   comments: false
+  hideFooter: true
 
   # Post series support — renders a series box at the top of each post
   ShowSeriesNavigation: true
