@@ -1,7 +1,7 @@
 ---
 title: "Hardening the OTBR Service File: Reading systemd-analyze Security"
 date: 2026-04-14
-draft: true
+draft: false
 tags: ["otbr", "openthread", "linux", "systemd", "security", "yocto", "cra"]
 slug: "otbr-systemd-hardening"
 series: ["Hardening OTBR"]
@@ -31,7 +31,6 @@ RestrictSUIDSGID=true
 LockPersonality=true
 ```
 
-<!-- TODO: add link to meta-iot-gateway recipe once repo is public -->
 
 This post walks through each directive: what it does, what it restricts, and where the tradeoffs are for a border router specifically. One — `PrivateDevices` — had to be set to `false`. The others held.
 
@@ -103,8 +102,10 @@ This is the one directive that had to stay off.
 OTBR creates the `wpan0` Thread interface by opening `/dev/net/tun` and issuing a `TUNSETIFF` ioctl. Without the TUN device node, startup fails immediately:
 
 ```
-otbr-agent[1395]: Init() at hdlc_interface.cpp:153: No such file or directory
-systemd[1]: otbr-agent.service: Main process exited, code=exited, status=5/NOTINSTALLED
+iot-gateway otbr-agent[4235]: [NOTE]-AGENT---: Radio URL: spinel+hdlc+uart:///dev/otbr-rcp?uart-baudrate=460800
+iot-gateway otbr-agent[4235]: [C] Platform------: Init() at hdlc_interface.cpp:153: No such file or directory
+iot-gateway systemd[1]: otbr-agent.service: Main process exited, code=exited, status=5/NOTINSTALLED
+iot-gateway systemd[1]: otbr-agent.service: Failed with result 'exit-code'.
 ```
 
 Verified by enabling it via a `/run/systemd/system/` drop-in on the device:
@@ -118,9 +119,9 @@ EOF
 systemctl daemon-reload && systemctl restart otbr-agent
 ```
 
-The RCP serial device (`/dev/otbr-rcp`, symlinked to `/dev/ttyACM0`) also disappears from the private `/dev`. Both failures happen at the same point. Closing this gap would require OTBR to support an abstract TUN interface or socket-passed file descriptor — neither is available upstream.
+The RCP serial device (`/dev/otbr-rcp`, symlinked to `/dev/ttyACM1`) also disappears from the private `/dev`. Both failures happen at the same point.
 
-`PrivateDevices=false` is the correct setting. The exposure is documented and understood.
+`PrivateDevices=false` is the correct setting for this configuration. The TUN device requirement is fundamental to how OTBR creates the `wpan0` interface; no alternative was validated against this build.
 
 ### [ProtectKernelTunables=](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html#ProtectKernelTunables=)true
 
@@ -216,7 +217,7 @@ root@iot-gateway:~# systemd-analyze security otbr-agent.service --no-pager
 → Overall exposure level for otbr-agent.service: 4.1 OK :-)
 ```
 
-`4.1 OK`. Every ✗ in the output is accounted for: one is a hard operational requirement (`PrivateNetwork`), one is a documented tradeoff (`SystemCallFilter`), two are systemd scoring artifacts from required capabilities (`RestrictAddressFamilies`), and one is cosmetic (`UMask`). None are oversights.
+`4.1 OK`. Every ✗ in the output is accounted for: one is a hard operational requirement (`PrivateNetwork`), one is a documented tradeoff (`SystemCallFilter`), two are required socket families that systemd scores as exposed regardless of intent (`RestrictAddressFamilies`), and one is cosmetic (`UMask`). None are oversights.
 
 That closes the OTBR service. The pattern — read the directive, test it on hardware, account for every ✗ — is the same work for every other daemon on this gateway. When another service has an interesting story, it'll make it here.
 
