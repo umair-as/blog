@@ -1,5 +1,5 @@
 ---
-title: "Hardening the OTBR Service File: Reading systemd-analyze Security"
+title: "Hardening OTBR: Reading a 4.1 systemd-analyze Score"
 date: 2026-04-14
 draft: false
 tags: ["otbr", "openthread", "linux", "systemd", "security", "yocto", "cra"]
@@ -8,7 +8,7 @@ series: ["Hardening OTBR"]
 summary: "Part 1 got OTBR running as a non-root user with three capabilities. Part 2 covers the hardening block in the service file — what each directive does, why one had to be an exception, and how to use systemd-analyze security as a decision tool rather than a score to chase. Part 2 of 2."
 ---
 
-[Part 1](/blog/posts/running-otbr-as-non-root/) ended with `otbr-agent` running as a dedicated system user with three network capabilities and a `systemd-analyze security` score of `4.1 OK`. The service unit carried a hardening block we didn't explain:
+[Part 1](/blog/posts/running-otbr-as-non-root/) ended with `otbr-agent` — the OpenThread Border Router daemon — running as a dedicated system user with three network capabilities and a `systemd-analyze security` score of `4.1 OK`. The service unit carried a hardening block we didn't explain:
 
 ```
 root@iot-gateway:~# systemctl cat otbr-agent | grep -A20 "# Capabilities"
