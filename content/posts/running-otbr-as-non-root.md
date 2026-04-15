@@ -186,7 +186,7 @@ NoNewPrivileges=true
 WantedBy=multi-user.target
 ```
 
-The service file also carries a hardening block — `ProtectSystem`, `PrivateDevices`, `RestrictAddressFamilies`, `MemoryDenyWriteExecute`, and a dozen others. Some of them required deliberate exceptions for OTBR specifically, and each directive is worth explaining properly. That's Part 2.
+The service file also carries a hardening block — `ProtectSystem`, `PrivateDevices`, `RestrictAddressFamilies`, and a dozen others. Some of them required deliberate exceptions for OTBR specifically, and each directive is worth explaining properly. That's Part 2.
 
 ### The firewall init script
 
