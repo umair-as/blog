@@ -3,23 +3,28 @@ title: "About"
 url: "/about/"
 summary: "About Umair Ahmed Shah"
 ShowToc: false
+searchHidden: true
 ---
 
 ### Hey, I'm Umair
 
-Systems software engineer based in Cologne, Germany. I've spent the last decade
-working close to the metal — custom Linux distributions, embedded firmware,
-wireless protocols, edge infrastructure, and the tooling that holds all of it together.
+I'm a systems software engineer based in Cologne, Germany.
+Most of my work sits at the boundary of embedded Linux, firmware, wireless protocols, and edge infrastructure.
 
-The domains shift depending on the project. The common thread is usually
-some combination of a constrained device, a network it needs to talk over, and a
-software stack that has to be reliable without anyone around to babysit it.
+This blog is a collection of engineering notes turned into publishable write-ups:
+what I investigated, what failed, what changed the approach, and what finally worked.
+The input is usually a mix of documentation, source code, issue trackers, and practical debugging.
 
-I write here about things I've actually built or debugged — not tutorials derived
-from documentation, but the real sequence of events: what I tried, what broke,
-and what eventually worked. Occasionally that's a deep dive into Yocto or Zephyr.
-Sometimes it's a wireshark trace or a CI pipeline or a kernel config decision that
-took three days to understand.
+I generally spend more time defining the problem than implementing the fix.
+Clear constraints first, code second.
+
+{{< about_chip >}}
+
+### Disclaimer
+
+These posts are from my personal builds and lab setups.
+I focus on reproducible technical details from work I can publicly share.
+Content is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) unless noted otherwise.
 
 ### Get in touch
 

@@ -3,6 +3,7 @@ title: "Privacy Policy"
 url: "/privacy/"
 summary: "Privacy policy for this site"
 draft: false
+searchHidden: true
 ---
 
 This is a static site. It does not use cookies, run analytics, or collect
