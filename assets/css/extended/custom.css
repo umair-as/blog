@@ -88,20 +88,48 @@ header#site-header {
   z-index: 100;
 }
 
+[data-theme="light"] header#site-header {
+  background: rgba(245, 242, 236, 0.92);
+}
+
 [data-theme="dark"] header#site-header {
   background: rgba(8, 12, 18, 0.92);
   border-bottom: 1px solid rgba(26, 34, 54, 0.8);
 }
 
+.nav {
+  column-gap: 16px;
+}
+
+.logo,
+#menu {
+  margin: auto 12px;
+}
+
 .logo a {
   font-size: 15px;
   font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.025em;
   color: var(--primary);
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 9px;
+}
+
+.logo a img[aria-label="logo"] {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px var(--amber-border);
+}
+
+.logo a svg[aria-label="logo"] {
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  box-shadow: 0 0 0 1px var(--amber-border);
+  flex: 0 0 auto;
 }
 
 /* Amber cursor blink after site title */
@@ -123,23 +151,74 @@ header#site-header {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--secondary);
-  transition: color 0.15s ease;
+  transition: color 0.15s ease, border-color 0.15s ease;
+  border-bottom: 2px solid transparent;
+  padding-bottom: 2px;
 }
 
-#menu a:hover,
-#menu .active {
-  color: var(--amber-text);
-  border-bottom: none !important;
+#menu li + li {
+  margin-inline-start: 22px;
+}
+
+#menu a:hover {
+  color: var(--primary);
 }
 
 #menu .active {
-  color: var(--amber-text);
-  border-bottom: 2px solid var(--amber) !important;
+  color: var(--primary);
+  border-bottom: 2px solid var(--amber-border) !important;
+}
+
+.logo-switches {
+  margin-left: 6px;
+}
+
+/* ── 3A. MINIMAL FOOTER ────────────────────────────────────── */
+.footer--minimal {
+  border-top: 1px solid var(--border);
+  margin-top: 28px;
+  padding-top: 14px;
+  padding-bottom: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.03em;
+  line-height: 1.6;
+}
+
+.footer--minimal a {
+  border-bottom: none;
+  color: var(--secondary);
+}
+
+.footer--minimal a:hover {
+  color: var(--primary);
+}
+
+.footer--minimal .footer-build {
+  color: var(--secondary);
+  opacity: 0.9;
+}
+
+[data-theme="dark"] .footer--minimal .footer-build {
+  color: var(--secondary);
+  opacity: 0.95;
 }
 
 /* ── 4. PAGE BODY ─────────────────────────────────────────── */
 .main {
   padding-top: var(--gap);
+}
+
+/* Give single-post pages more room on desktop; list/home remain unchanged */
+@media (min-width: 1280px) {
+  .main:has(.post-single) {
+    max-width: min(1240px, calc(100vw - 32px));
+  }
 }
 
 /* Warm tinted list page background */
@@ -557,55 +636,143 @@ header#site-header {
 /* ── 8. TABLE OF CONTENTS ─────────────────────────────────── */
 .toc {
   font-family: var(--font-mono);
-  font-size: 13px;
-  background: var(--code-bg) !important;
-  border: 1px solid var(--border) !important;
-  border-left: 3px solid var(--amber) !important;
-  border-radius: var(--radius) !important;
-  padding: 14px 16px !important;
-  margin: 0 0 32px !important;
+  font-size: 14px;
+  border-radius: 10px;
+  margin: 0 0 28px;
+  border: 1px solid var(--border);
 }
 
-[data-theme="dark"] .toc {
-  background: var(--entry) !important;
+.toc summary {
+  list-style: none;
+}
+
+.toc summary::-webkit-details-marker {
+  display: none;
 }
 
 .toc .details {
-  font-weight: 600;
+  display: block;
   font-size: 11px;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--amber-text);
 }
 
 .toc .inner {
-  margin: 10px 0 0 0;
-  padding: 0;
-  line-height: 1.9;
+  margin-top: 10px;
 }
 
-.toc a {
+.toc .inner ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.toc .inner li + li {
+  margin-top: 8px;
+}
+
+.toc .inner a {
+  display: block;
   color: var(--secondary);
   text-decoration: none;
-  transition: color 0.12s;
+  border-radius: 6px;
+  transition: color 0.12s, background-color 0.12s;
 }
 
-.toc a:hover {
+.toc .inner a:hover {
   color: var(--amber-text);
 }
 
-/* Sticky left sidebar TOC on wide screens */
-@media (min-width: 1400px) {
-  .toc {
-    position: fixed;
-    left: 2rem;
-    top: 5rem;
-    width: 220px;
-    max-height: calc(100vh - 7rem);
-    overflow-y: auto;
-    margin: 0 !important;
-    z-index: 10;
+.toc .inner a.is-active {
+  color: var(--primary);
+  background: var(--code-bg);
+}
+
+/* Variant A: clean inline card */
+.toc--inline-card {
+  max-width: 760px;
+  background: var(--code-bg);
+}
+
+.toc--inline-card details {
+  padding: 14px 16px;
+}
+
+.toc--inline-card .inner a {
+  padding: 3px 8px;
+}
+
+/* Variant B: right rail on desktop, inline on mobile */
+.toc--right-rail {
+  background: var(--entry);
+}
+
+.toc--right-rail details {
+  padding: 14px 16px;
+}
+
+.toc--right-rail .inner a {
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 4px 8px;
+}
+
+@media (min-width: 1280px) {
+  .post-single:has(> .toc--right-rail) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    column-gap: 32px;
+    align-items: start;
+    max-width: min(1480px, calc(100vw - 48px));
   }
+
+  .post-single:has(> .toc--right-rail) > .post-header,
+  .post-single:has(> .toc--right-rail) > .post-content,
+  .post-single:has(> .toc--right-rail) > .post-footer {
+    grid-column: 1;
+    min-width: 0;
+  }
+
+  .toc--right-rail {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    position: sticky;
+    top: calc(var(--header-height) + 20px);
+    width: 100%;
+    max-height: calc(100vh - var(--header-height) - 40px);
+    overflow-y: auto;
+    margin: 0;
+  }
+}
+
+/* Prefer wrapped logs/output blocks over horizontal drag for text fences */
+.post-content .highlight pre:has(code.language-text),
+.post-content .highlight pre:has(code[data-lang="text"]) {
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere;
+}
+
+.post-content .highlight pre:has(code.language-text) code,
+.post-content .highlight pre:has(code[data-lang="text"]) code {
+  white-space: inherit !important;
+}
+
+.post-content .highlight pre:has(code.language-text) span[style*="display:flex"],
+.post-content .highlight pre:has(code[data-lang="text"]) span[style*="display:flex"] {
+  display: block !important;
+}
+
+/* About page secondary logo mark */
+.post-content .about-chip-mark {
+  width: 64px;
+  height: 64px;
+  margin: 8px 0 18px;
+  padding: 6px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--entry);
 }
 
 /* ── 9. POST TAGS ─────────────────────────────────────────── */
@@ -856,8 +1023,12 @@ button#theme-toggle:hover {
   box-shadow: 0 1px 0 rgba(107, 48, 0, 0.35) !important;
 }
 
-[data-theme="light"] .toc {
-  background: #f0ece4 !important;
+[data-theme="light"] .toc--inline-card {
+  background: #f0ece4;
+}
+
+[data-theme="light"] .toc--right-rail {
+  background: #f4f0e7;
 }
 
 [data-theme="light"] .home-hero__stack span:hover {

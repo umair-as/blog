@@ -1,15 +1,58 @@
 {{/* Extended footer — copyright, license, build info */}}
-<footer class="footer">
-  <span>
-    © {{ now.Year }} Umair Ahmed Shah ·
-    Content licensed under
-    <a href="https://creativecommons.org/licenses/by/4.0/"
-       target="_blank"
-       rel="noopener noreferrer">CC BY 4.0</a>
-    unless otherwise noted
-  </span>
-  <span>
-    Built with <a href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a>
-    &amp; <a href="https://github.com/adityatelange/hugo-PaperMod" target="_blank" rel="noopener noreferrer">PaperMod</a>
-  </span>
+<footer class="footer footer--minimal">
+  <span>© {{ now.Year }} Umair Ahmed Shah</span>
+  <span>·</span>
+  <a href="{{ "/index.xml" | absLangURL }}">RSS</a>
+  <span>·</span>
+  <a href="https://github.com/umair-as" target="_blank" rel="noopener noreferrer">GitHub</a>
+  <span>·</span>
+  <a href="https://de.linkedin.com/in/umairahmedshah" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+  <span>·</span>
+  <span class="footer-build">Built with Hugo</span>
 </footer>
+<script>
+  (function () {
+    function initTocActiveState() {
+      var toc = document.querySelector('.toc');
+      if (!toc) return;
+
+      var tocLinks = Array.prototype.slice.call(
+        toc.querySelectorAll('.inner a[href^="#"]')
+      );
+      if (!tocLinks.length) return;
+
+      var headingMap = new Map();
+      tocLinks.forEach(function (link) {
+        var id = decodeURIComponent(link.getAttribute('href').slice(1));
+        var heading = document.getElementById(id);
+        if (heading) headingMap.set(heading, link);
+      });
+
+      if (!headingMap.size) return;
+
+      var observer = new IntersectionObserver(
+        function (entries) {
+          entries.forEach(function (entry) {
+            var link = headingMap.get(entry.target);
+            if (!link) return;
+            if (entry.isIntersecting) {
+              tocLinks.forEach(function (l) { l.classList.remove('is-active'); });
+              link.classList.add('is-active');
+            }
+          });
+        },
+        { rootMargin: "-20% 0px -70% 0px", threshold: 0.01 }
+      );
+
+      headingMap.forEach(function (_, heading) {
+        observer.observe(heading);
+      });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initTocActiveState);
+    } else {
+      initTocActiveState();
+    }
+  })();
+</script>

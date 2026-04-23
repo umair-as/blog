@@ -1,6 +1,6 @@
 baseURL: https://umair-as.github.io/blog/
 locale: en-us
-title: Umair Ahmed Shah
+title: "Umair's Systems Notebook"
 theme: PaperMod
 
 paginate: 10
@@ -18,6 +18,8 @@ params:
   ShowToc: true
   TocOpen: true
   UseHugoToc: true
+  # ToC style variants: inline-card | right-rail
+  TocVariant: right-rail
   ShowWordCount: false
   ShowRssButtonInSectionTermList: true
   comments: false
@@ -27,10 +29,17 @@ params:
   ShowSeriesNavigation: true
 
   homeInfoParams:
-    Title: "Umair Ahmed Shah"
+    Title: "Umair's Systems Notebook"
     Content: >
-      Building IoT gateways, custom Linux distributions, and wireless firmware
-      — then writing about what actually happened.
+      By Umair Ahmed Shah. Building IoT gateways, custom Linux distributions,
+      and wireless firmware — then writing about what actually happened.
+
+  label:
+    iconSVG: >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="logo" width="24" height="24">
+        <rect x="8" y="8" width="48" height="48" rx="8" fill="none" stroke="#C2762A" stroke-width="4"></rect>
+        <path d="M22 24 L22 40 C22 44 24 46 26 46 L38 46 C40 46 42 44 42 40 L42 24" stroke="#C2762A" stroke-width="4" fill="none" stroke-linecap="round"></path>
+      </svg>
 
   socialIcons:
     - name: github
@@ -41,7 +50,7 @@ params:
       url: "/blog/index.xml"
 
   assets:
-    favicon: "/favicon.ico"
+    favicon: "favicon.ico"
 
   # Schema.org structured data — helps search engines understand the site
   schema:
@@ -51,9 +60,9 @@ params:
     isCaseSensitive: false
     shouldSort: true
     location: 0
-    distance: 1000
-    threshold: 0.4
-    minMatchCharLength: 0
+    distance: 100
+    threshold: 0.22
+    minMatchCharLength: 2
     keys: ["title", "permalink", "summary", "content"]
 
 menu:
