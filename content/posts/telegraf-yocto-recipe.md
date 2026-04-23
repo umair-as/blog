@@ -329,8 +329,8 @@ clean answer from systemd alone.
 Full source for the recipe, service file, and tmpfiles config is in
 [`meta-iot-gateway`](https://github.com/umair-as/rpi5-iot-gateway/tree/main/meta-iot-gateway/recipes-observability/telegraf).
 
-[^1]: [Telegraf `custom_builder` — upstream docs](https://github.com/influxdata/telegraf/blob/master/docs/CUSTOM_BUILDER.md)
-[^2]: [`go-mod.bbclass` — OpenEmbedded source](https://github.com/openembedded/openembedded-core/blob/main/meta/classes/go-mod.bbclass)
+[^1]: [Telegraf `custom_builder` — upstream docs](https://github.com/influxdata/telegraf/blob/master/docs/CUSTOMIZATION.md)
+[^2]: [`go-mod.bbclass` — OpenEmbedded source](https://github.com/openembedded/openembedded-core/blob/master/meta/classes-recipe/go-mod.bbclass)
 [^3]: [`systemd.exec(5)` — `LoadCredential=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.exec.html#LoadCredential=)
 [^4]: [`secretstores.systemd` plugin — Telegraf docs](https://github.com/influxdata/telegraf/blob/master/plugins/secretstores/systemd/README.md)
 [^5]: [`systemd.unit(5)` — `ConditionFileNotEmpty=`](https://www.freedesktop.org/software/systemd/man/latest/systemd.unit.html#ConditionFileNotEmpty=)
