@@ -2,7 +2,7 @@
 <footer class="footer footer--minimal">
   <span>© {{ now.Year }} Umair Ahmed Shah</span>
   <span>·</span>
-  <a href="{{ "/index.xml" | absLangURL }}">RSS</a>
+  <a href="{{ (site.Home.OutputFormats.Get "rss").Permalink }}">RSS</a>
   <span>·</span>
   <a href="https://github.com/umair-as" target="_blank" rel="noopener noreferrer">GitHub</a>
   <span>·</span>
