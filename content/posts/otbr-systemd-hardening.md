@@ -5,6 +5,7 @@ draft: false
 tags: ["otbr", "openthread", "linux", "systemd", "security", "yocto", "cra"]
 slug: "otbr-systemd-hardening"
 series: ["Hardening OTBR"]
+seriesOrder: 2
 summary: "Part 1 got OTBR running as a non-root user with three capabilities. Part 2 covers the hardening block in the service file — what each directive does, why one had to be an exception, and how to use systemd-analyze security as a decision tool rather than a score to chase. Part 2 of 2."
 ---
 
