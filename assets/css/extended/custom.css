@@ -731,7 +731,8 @@ header#site-header {
   .post-single:has(> .toc--right-rail) > .post-header,
   .post-single:has(> .toc--right-rail) > .series-box,
   .post-single:has(> .toc--right-rail) > .post-content,
-  .post-single:has(> .toc--right-rail) > .post-footer {
+  .post-single:has(> .toc--right-rail) > .post-footer,
+  .post-single:has(> .toc--right-rail) > .post-comments {
     grid-column: 1;
     min-width: 0;
   }
@@ -1034,6 +1035,11 @@ button#theme-toggle:hover {
 
 [data-theme="light"] .home-hero__stack span:hover {
   border-color: rgba(107, 48, 0, 0.4);
+}
+
+/* Comments sit below the article, full content width (not in the ToC rail). */
+.post-comments {
+  margin-top: 2.5rem;
 }
 
 /* ── Series navigation box ─────────────────────────────────────────────── */

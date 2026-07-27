@@ -3,6 +3,7 @@
 {{- /* Repo IDs come from https://giscus.app for umair-as/blog. Category "Announcements"
        means only the maintainer can open threads, keeping the discussion→page mapping clean. */ -}}
 {{- if eq .Section "posts" }}
+<div class="post-comments">
 <script src="https://giscus.app/client.js"
         data-repo="umair-as/blog"
         data-repo-id="R_kgDORwd-Tg"
@@ -47,4 +48,5 @@
     if (btn) btn.addEventListener('click', function () { setTimeout(sendTheme, 50); });
   })();
 </script>
+</div>
 {{- end }}
