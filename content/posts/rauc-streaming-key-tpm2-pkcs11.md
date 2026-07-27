@@ -1,7 +1,7 @@
 ---
 title: "Moving RAUC's HTTPS Streaming Key into TPM2 via PKCS#11"
 date: 2026-04-23
-draft: true
+draft: false
 tags: ["rauc", "yocto", "tpm2", "pkcs11", "mtls", "iot-gateway", "ota", "debugging"]
 slug: "rauc-streaming-key-tpm2-pkcs11"
 summary: "Migrating RAUC's mTLS client key from a file on disk to a TPM2-backed PKCS#11 URI. The recipe wiring was straightforward; the URI was not. module-path is a p11-kit URI extension that libp11 — the parser RAUC's streaming path actually uses — rejects outright."
@@ -31,10 +31,10 @@ revocation only closes the window after the abuse is detected. Moving the key
 into a TPM2 object accessed via PKCS#11 binds it to this physical device's
 TPM: the same image read on a different machine yields a useless certificate.
 
-This is the convergent pattern across embedded mTLS clients. AWS IoT Greengrass
-v2, Azure IoT Edge, and Mender all support PKCS#11-backed TPM or HSM keys via
-libp11 for the same reason. Anyone integrating that stack lands on the same
-URI parser this post is about.
+This is the convergent pattern across embedded mTLS clients: AWS IoT Greengrass
+v2, Azure IoT Edge, and Mender all support PKCS#11-backed TPM or HSM keys for
+the same reason. Any client that loads its key through OpenSSL's PKCS#11 engine
+— as RAUC does — lands on the same libp11 URI parser this post is about.
 
 The honest limitation: a live device with the PIN file readable to its owner
 process remains a signing oracle. A root-level runtime compromise can drive
