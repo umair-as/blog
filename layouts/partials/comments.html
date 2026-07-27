@@ -1,0 +1,50 @@
+{{- /* Comments via giscus (GitHub Discussions). `comments: true` is set site-wide,
+       but only articles should carry a thread, so scope to the posts section here. */ -}}
+{{- /* Repo IDs come from https://giscus.app for umair-as/blog. Category "Announcements"
+       means only the maintainer can open threads, keeping the discussion→page mapping clean. */ -}}
+{{- if eq .Section "posts" }}
+<script src="https://giscus.app/client.js"
+        data-repo="umair-as/blog"
+        data-repo-id="R_kgDORwd-Tg"
+        data-category="Announcements"
+        data-category-id="DIC_kwDORwd-Ts4DCDdt"
+        data-mapping="pathname"
+        data-strict="1"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="dark"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+</script>
+
+<script>
+  (function () {
+    function giscusTheme() {
+      // PaperMod stores the active theme on <html data-theme>; default to dark
+      // (the site's defaultTheme) when it hasn't been set yet.
+      return document.documentElement.dataset.theme === 'light' ? 'light' : 'dark';
+    }
+    function sendTheme() {
+      var frame = document.querySelector('iframe.giscus-frame');
+      if (!frame) return;
+      frame.contentWindow.postMessage(
+        { giscus: { setConfig: { theme: giscusTheme() } } },
+        'https://giscus.app'
+      );
+    }
+    // giscus emits a message once its iframe is ready; align its theme with the
+    // reader's stored PaperMod preference then (data-theme above is only the default).
+    var synced = false;
+    window.addEventListener('message', function (e) {
+      if (e.origin !== 'https://giscus.app') return;
+      if (!synced) { synced = true; sendTheme(); }
+    });
+    // Re-sync when the reader flips PaperMod's dark/light toggle.
+    var btn = document.getElementById('theme-toggle');
+    if (btn) btn.addEventListener('click', function () { setTimeout(sendTheme, 50); });
+  })();
+</script>
+{{- end }}
