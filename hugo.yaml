@@ -27,7 +27,7 @@ params:
 
   # Google Search Console verification. Paste the token from the
   # "HTML tag" verification method (the content="..." value only).
-  googleSiteVerification: ""
+  googleSiteVerification: "ULWZsWKe7bwXnbLALZLCcPJ_uKM0AKLinfFUCcxkE04"
 
   # Post series support — renders a series box at the top of each post
   ShowSeriesNavigation: true
