@@ -4,6 +4,8 @@ date: 2026-04-23
 draft: false
 tags: ["rauc", "yocto", "tpm2", "pkcs11", "mtls", "iot-gateway", "ota", "debugging"]
 slug: "rauc-streaming-key-tpm2-pkcs11"
+series: ["Secure OTA with RAUC"]
+seriesOrder: 1
 summary: "Migrating RAUC's mTLS client key from a file on disk to a TPM2-backed PKCS#11 URI. The recipe wiring was straightforward; the URI was not. module-path is a p11-kit URI extension that libp11 — the parser RAUC's streaming path actually uses — rejects outright."
 ---
 

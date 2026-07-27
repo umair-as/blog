@@ -5,6 +5,7 @@ draft: false
 tags: ["otbr", "openthread", "linux", "systemd", "security", "yocto"]
 slug: "running-otbr-as-non-root"
 series: ["Hardening OTBR"]
+seriesOrder: 1
 summary: "OpenThread Border Router assumes it runs as root. Getting it down to a least-privilege non-root user means figuring out exactly what it needs — which turned out to be a source code problem, not a trial-and-error problem. Part 1 of 2."
 ---
 

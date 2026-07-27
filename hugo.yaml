@@ -79,6 +79,10 @@ menu:
       name: Tags
       url: /tags/
       weight: 10
+    - identifier: series
+      name: Series
+      url: /series/
+      weight: 12
     - identifier: search
       name: Search
       url: /search/
@@ -87,6 +91,12 @@ menu:
       name: About
       url: /about/
       weight: 20
+
+# Declaring taxonomies replaces the Hugo defaults, so tag/category are re-listed.
+taxonomies:
+  tag: tags
+  category: categories
+  series: series
 
 outputs:
   home:

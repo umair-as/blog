@@ -69,7 +69,12 @@ make article SLUG=your-post-slug
 - Syntax highlighting: Nord style
 - ToC: enabled, closed by default
 - Share buttons: disabled
-- Series navigation: enabled (ShowSeriesNavigation)
+- Series navigation: custom implementation (PaperMod has none). `series` is a
+  declared taxonomy; `layouts/partials/series.html` renders a "Part N of _X_"
+  box (injected via the `layouts/_default/single.html` override), ordered by the
+  `seriesOrder` frontmatter field. Browsable index at `/series/`. The box only
+  renders for a series with 2+ published parts. (`ShowSeriesNavigation: true` in
+  hugo.yaml is inert — not read by anything — kept only as a marker.)
 - Code copy buttons: enabled
 
 ## Post frontmatter standard
@@ -82,6 +87,7 @@ draft: true                    # set false only after final review
 tags: ["tag1", "tag2"]
 slug: "url-friendly-slug"
 series: ["Series Name"]        # omit if not part of a series
+seriesOrder: 1                 # reading position in the series (required if series is set)
 summary: "One sentence. What the post covers and why it matters to a systems engineer."
 ---
 ```

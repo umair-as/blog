@@ -1,0 +1,34 @@
+{{- /* Series-navigation box. Renders on a post that belongs to a `series`
+       taxonomy term with 2+ published parts. Parts are ordered by the
+       `seriesOrder` frontmatter field (integer), NOT by date — the posts are
+       dated when the work happened, which isn't the reading order. Drafts are
+       excluded automatically in production builds. */ -}}
+{{- with .GetTerms "series" }}
+  {{- $current := $ }}
+  {{- $series := index . 0 }}
+  {{- $parts := sort $series.Pages ".Params.seriesOrder" }}
+  {{- if ge (len $parts) 2 }}
+  {{- $count := len $parts }}
+  <aside class="series-box" aria-label="Posts in this series">
+    <div class="series-box__head">
+      <span class="series-box__eyebrow">Series</span>
+      <a class="series-box__title" href="{{ $series.Permalink }}">{{ $series.LinkTitle }}</a>
+      <span class="series-box__count">{{ $count }} parts</span>
+    </div>
+    <ol class="series-box__list">
+      {{- range $i, $p := $parts }}
+      {{- $isCurrent := eq $p.Permalink $current.Permalink }}
+      <li class="series-box__item{{ if $isCurrent }} is-current{{ end }}"{{ if $isCurrent }} aria-current="true"{{ end }}>
+        <span class="series-box__num">Part {{ add $i 1 }}</span>
+        {{- if $isCurrent }}
+        <span class="series-box__name">{{ $p.LinkTitle }}</span>
+        <span class="series-box__here">reading now</span>
+        {{- else }}
+        <a class="series-box__name" href="{{ $p.Permalink }}">{{ $p.LinkTitle }}</a>
+        {{- end }}
+      </li>
+      {{- end }}
+    </ol>
+  </aside>
+  {{- end }}
+{{- end }}
