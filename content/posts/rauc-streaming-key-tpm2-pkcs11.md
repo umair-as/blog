@@ -4,15 +4,8 @@ date: 2026-04-23
 draft: true
 tags: ["rauc", "yocto", "tpm2", "pkcs11", "mtls", "iot-gateway", "ota", "debugging"]
 slug: "rauc-streaming-key-tpm2-pkcs11"
-summary: "Migrating RAUC's mTLS client key from a file on disk to a TPM2-backed PKCS#11 URI. The recipe wiring was straightforward; the URI was not. p11-kit and libp11 disagree on a single attribute, and RAUC routes through both."
+summary: "Migrating RAUC's mTLS client key from a file on disk to a TPM2-backed PKCS#11 URI. The recipe wiring was straightforward; the URI was not. module-path is a p11-kit URI extension that libp11 — the parser RAUC's streaming path actually uses — rejects outright."
 ---
-
-<!--
-SCAFFOLD NOTES (delete before publish):
-- All sections drafted. Read end-to-end for tone before flipping draft: false.
-- Date is 2026-04-23 (when the work happened). Change to publication date
-  if you'd rather. Hugo sorts by frontmatter date, not commit date.
--->
 
 RAUC HTTPS streaming with mTLS had been working on the
 [rpi5-iot-gateway](https://github.com/umair-as/rpi5-iot-gateway) — a
@@ -227,8 +220,8 @@ That proves the key exists, the PIN unlocks it, and the TPM will sign. What it
 never touches is the streaming URI. `module-path` lives only in that URI, and
 the URI is parsed by exactly one thing: libp11, inside RAUC's streaming
 subprocess, at install time. **A passing preflight gives no signal about
-whether the streaming path can load the same key** — not because two parsers
-disagree, but because only one of them ever sees the string that's broken. The
+whether the streaming path can load the same key** — not because it runs a
+more forgiving parser, but because it never parses that URI at all. The
 install wrapper doesn't close the gap either: its connectivity preflight skips
 the key check entirely for a `pkcs11:` `tls-key`, deferring to RAUC.
 
@@ -243,10 +236,14 @@ The toggle and the URI live in the distro include
 (`meta-iot-gateway/conf/distro/include/iotgw-common.inc`):
 
 ```bash
-IOTGW_RAUC_STREAMING_KEY_MODE ?= "file"
+IOTGW_RAUC_STREAMING_KEY_MODE ?= "file"          # file | pkcs11
 IOTGW_RAUC_PKCS11_BACKEND ?= "tpm2"
-IOTGW_RAUC_PKCS11_TLS_KEY ?= ""
-IOTGW_RAUC_PKCS11_MODULE ?= "/usr/lib/pkcs11/libtpm2_pkcs11.so"
+
+# Backend-specific presets. The mode/backend selector resolves the bare
+# IOTGW_RAUC_PKCS11_TLS_KEY and IOTGW_RAUC_PKCS11_MODULE from the active
+# backend's *_TPM2 values below.
+IOTGW_RAUC_PKCS11_TLS_KEY_TPM2 ?= "pkcs11:token=iotgw;object=rauc-client-key;type=private;pin-source=file:/etc/ota/pkcs11-pin"
+IOTGW_RAUC_PKCS11_MODULE_TPM2 ?= "/usr/lib/pkcs11/libtpm2_pkcs11.so"
 IOTGW_TPM2_PKCS11_STORE ?= "/var/lib/tpm2_pkcs11"
 ```
 
