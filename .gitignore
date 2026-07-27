@@ -3,3 +3,5 @@ resources/_gen/
 .hugo_build.lock
 ARTICLES.md
 CONTRIBUTING.md
+.claude/
+scratch/**
