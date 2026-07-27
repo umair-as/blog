@@ -22,6 +22,7 @@
         <span class="series-box__num">Part {{ add $i 1 }}</span>
         {{- if $isCurrent }}
         <span class="series-box__name">{{ $p.LinkTitle }}</span>
+        <span class="series-box__here">reading now</span>
         {{- else }}
         <a class="series-box__name" href="{{ $p.Permalink }}">{{ $p.LinkTitle }}</a>
         {{- end }}

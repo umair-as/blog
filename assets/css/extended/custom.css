@@ -729,6 +729,7 @@ header#site-header {
   }
 
   .post-single:has(> .toc--right-rail) > .post-header,
+  .post-single:has(> .toc--right-rail) > .series-box,
   .post-single:has(> .toc--right-rail) > .post-content,
   .post-single:has(> .toc--right-rail) > .post-footer {
     grid-column: 1;
@@ -1112,4 +1113,17 @@ a.series-box__name:hover {
 .series-box__item.is-current .series-box__num {
   opacity: 1;
   font-weight: 600;
+}
+
+.series-box__here {
+  flex: 0 0 auto;
+  align-self: center;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--amber-text);
+  border: 1px solid var(--amber-border);
+  border-radius: 999px;
+  padding: 0.08rem 0.5rem;
 }
