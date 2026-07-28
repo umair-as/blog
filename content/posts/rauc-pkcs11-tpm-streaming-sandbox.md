@@ -1,12 +1,19 @@
 ---
-title: "RAUC Streaming OTA with TPM-Backed PKCS#11: What `Unable to load module (null)` Actually Means"
+title: "RAUC Streaming OTA: When the Sandbox User Can't Reach the TPM"
 date: 2026-04-21
-draft: true
+draft: false
 tags: ["rauc", "ota", "pkcs11", "tpm", "tpm2-pkcs11", "systemd", "security", "embedded-linux", "yocto"]
 slug: "rauc-pkcs11-tpm-streaming-sandbox"
-series: ["IoT Gateway OS"]
+series: ["Secure OTA with RAUC"]
+seriesOrder: 2
 summary: "Switching RAUC's streaming mTLS client key from a file path to a PKCS#11 URI produced a one-line error with no obvious cause. The real problem was not the module path, not the engine, and not a missing PIN — it was the sandbox user's group membership and what tpm2-pkcs11 needs to initialise."
 ---
+
+Moving RAUC's streaming key into the TPM took two debugging sessions on two unrelated
+failures. [The first part](/blog/posts/rauc-streaming-key-tpm2-pkcs11/) was a
+`module-path` attribute the URI parser rejected. This is the other one, and it cut
+deeper: the sandboxed streaming user couldn't reach the TPM at all, and the error said
+almost nothing about why.
 
 The streaming OTA setup had been working for months: RAUC's `rauc-nbd` subprocess
 authenticates to the bundle server over mTLS, streams the bundle directly into the
@@ -59,15 +66,16 @@ The setup already had a drop-in for `rauc.service`:
 Environment=RAUC_PKCS11_MODULE=/usr/lib/pkcs11/libtpm2_pkcs11.so
 ```
 
-The RAUC docs describe `RAUC_PKCS11_MODULE` as the fallback for systems where p11-kit
-is not available. The error looked like a module discovery failure, so that env var
-was the obvious first place to look. I removed the drop-in, restarted rauc, ran the
-install again. Same PID, same `(null)`, same five retries.
+The RAUC docs mention `RAUC_PKCS11_MODULE` as a way to name the PKCS#11 module when you
+can't use p11-kit. The error looked like a module-discovery failure, so that env var was
+the obvious first place to look. I removed the drop-in, restarted rauc, ran the install
+again. Same PID, same `(null)`, same five retries.
 
-That killed the env var hypothesis. This system had p11-kit installed with tpm2_pkcs11
-registered in its module config — so libp11 was going through p11-kit for discovery
-and never reading `RAUC_PKCS11_MODULE` at all. The drop-in had been doing nothing from
-the start.
+That killed the env var hypothesis — and reading the docs more carefully showed why it
+was never going to matter. `RAUC_PKCS11_MODULE` is consulted only on RAUC's *signing*
+path; the reference marks it "signing only". The streaming subprocess loads the client
+key through libp11's own module discovery and never reads that variable. The drop-in had
+been doing nothing from the start — a signing knob aimed at a streaming problem.
 
 ## What the sandbox user actually sees
 
@@ -158,42 +166,29 @@ backend's prerequisites were just never accounted for.
 
 ## The fix
 
-Two changes in the Yocto layer, each closing one of the two failures.
+Two changes, each closing one of the two failures.
 
-**Add `ota` to the `iotgwtpm` supplementary group in `ota-updater_1.0.0.bb`:**
+**Give `ota` membership in `iotgwtpm`.** That group is created by the `iotgw-tpm-policy`
+recipe specifically to gate `/dev/tpmrm0`; adding `ota` to it hands tpm2-tss a device
+node it can open, which unblocks the TCTI chain. The `ota` user is built by the OTA
+layer's `useradd` recipe, so this is a change to the set of groups it's created with —
+nothing more.
 
-```bitbake
-USERADD_PARAM:${PN} = " \
-    --system \
-    --home /nonexistent \
-    --no-create-home \
-    --shell /bin/false \
-    --gid ota \
-    --groups iotgwtpm \
-    ota"
-```
-
-`iotgwtpm` is created by the `iotgw-tpm-policy` recipe specifically to gate access to
-`/dev/tpmrm0`. Adding `ota` gives tpm2-tss a device node it can open, which unblocks
-the TCTI initialisation chain.
-
-**Redirect the token database in the `rauc.service` drop-in:**
+**Point `TPM2_PKCS11_STORE` at a real directory** in the `rauc.service` drop-in:
 
 ```ini
 [Service]
 Environment=TPM2_PKCS11_STORE=/var/lib/tpm2_pkcs11
 ```
 
-`TPM2_PKCS11_STORE` overrides the default `~/.tpm2_pkcs11/` path. `/var/lib/tpm2_pkcs11`
-is a system-owned directory that exists and is accessible to the service user. The
-token and key object still need to be provisioned there using `tpm2_ptool` — but that
-is a one-time setup step, not a permissions problem. With both access issues resolved,
-the module initialises cleanly and the error from rauc shifts from
-`Unable to load module (null)` to a token lookup failure: a different error, a
-solvable one, and proof that the module is now working.
+That overrides the default `~/.tpm2_pkcs11/`, which for a `/nonexistent`-home system
+user can never be created. `/var/lib/tpm2_pkcs11` is a system-owned directory that
+exists and is reachable by the service user. The token and key object still have to be
+provisioned there with `tpm2_ptool` — a one-time setup step, not a permissions problem.
 
-The `RAUC_PKCS11_MODULE` line is gone from the drop-in. With p11-kit present and the
-module registered, libp11 never consults it.
+With both access issues resolved, the module initialises cleanly and rauc's error
+shifts from `Unable to load module (null)` to a token-lookup failure: a different error,
+a solvable one, and proof that the module is finally working.
 
 ## The one-line documentation gap
 
@@ -208,3 +203,21 @@ a reachable path for the PKCS#11 library's token database, and a provisioned tok
 with the key object present. The surface area is significantly larger, and none of it
 appears in the error output when something is missing — just a null module pointer
 and a generic load failure, with no pointer to which prerequisite was not met.
+
+---
+
+> **Update (July 2026).** This was the layout in April 2026. Since then the OTA user
+> moved to a dedicated `iotgw-ota-user` recipe, its `iotgwtpm` membership is applied as
+> a rootfs post-process step rather than through `useradd` directly, and the token store
+> moved from `/var/lib/tpm2_pkcs11` to `/data/tpm2_pkcs11` so the OTA identity survives
+> the switch to a volatile `/var`. The access requirements the post describes are
+> unchanged.
+
+## References
+
+- [RAUC — Streaming Bundles](https://rauc.readthedocs.io/en/latest/advanced.html#streaming-bundles) — the sandboxed `rauc-nbd` streaming subprocess and `sandbox-user`
+- [RAUC — PKCS#11 Support](https://rauc.readthedocs.io/en/latest/advanced.html#pkcs11-support) — `RAUC_PKCS11_MODULE` (signing only) and p11-kit discovery
+- [tpm2-pkcs11](https://github.com/tpm2-software/tpm2-pkcs11) — the PKCS#11 module, its SQLite token store, and `TPM2_PKCS11_STORE`
+- [tpm2-tss](https://github.com/tpm2-software/tpm2-tss) — the TCTI device-probe order (`/dev/tpmrm0` → `/dev/tpm0` → swtpm socket)
+- [libp11 — engine_pkcs11](https://github.com/OpenSC/libp11) — the OpenSSL PKCS#11 engine RAUC's streaming path loads the key through
+- Gateway Yocto BSP (open source): [github.com/umair-as/rpi5-iot-gateway](https://github.com/umair-as/rpi5-iot-gateway) — the `ota` user, `iotgw-tpm-policy`, and RAUC streaming wiring under `meta-iot-gateway/`

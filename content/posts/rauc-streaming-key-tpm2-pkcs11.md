@@ -359,6 +359,12 @@ URI the subprocess never got to use. The first place to look in
 highest PID in the same time window. The shortest-lived process is usually
 the one that actually broke.
 
+The `module-path` attribute was one of two walls this migration hit. The other
+showed up before it and cut deeper: the sandboxed streaming helper couldn't
+reach the TPM at all, and `Unable to load module (null)` was the only clue it
+left. That's [the next part in this
+series](/blog/posts/rauc-pkcs11-tpm-streaming-sandbox/).
+
 ---
 
 > **Update (v0.5.0, July 2026).** This was the layout as of April 2026. The
