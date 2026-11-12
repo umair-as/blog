@@ -144,21 +144,31 @@ from commands.
 
 ## Active post series
 
-### Hardening OTBR (2 parts)
+### Hardening OTBR (2 parts, complete)
 - Part 1: `content/posts/running-otbr-as-non-root.md` — capability mapping,
   dedicated user, socket directory patch, firewall init, D-Bus policy
-- Part 2: (planned) systemd service hardening — ProtectSystem,
-  RestrictAddressFamilies, SystemCallFilter, closing the gaps from the
-  4.1 OK security score
+- Part 2: `content/posts/otbr-systemd-hardening.md` — systemd service
+  hardening, reading the 4.1 systemd-analyze security score
 
-### Planned posts (not started)
-- SSH hardening on production embedded Linux
-- Kernel + U-Boot hardening on RPi5
-- RPi5 secure boot: BCM2712 OTP → U-Boot gap
+### Secure OTA with RAUC (2 parts live, Part 3 planned)
+- Part 1: `content/posts/rauc-streaming-key-tpm2-pkcs11.md` — streaming
+  mTLS key in TPM2 via PKCS#11, module-path URI conflict
+- Part 2: `content/posts/rauc-pkcs11-tpm-streaming-sandbox.md` — sandbox
+  user access to the TPM store
+- Part 3: (planned) RAUC daemon-side hardening. The existing draft
+  `rauc-install-systemd-hardening.md` (systemd-run wrapper) needs reframing
+  before it can publish.
+
+### Standalone posts
+- `telegraf-yocto-recipe.md`, `uboot-bootm-len-silent-ab-fallback.md`
 
 ## Planned backlog
-Posts derived from the rpi5-iot-gateway project:
-https://github.com/umair-as/rpi5-iot-gateway
+Posts derive from two public projects:
+- https://github.com/umair-as/rpi5-iot-gateway
+- https://github.com/umair-as/edge-ai-yocto
+
+Every post is reviewed against the current state of its source project before
+publishing.
 
 ## Deployment
 
